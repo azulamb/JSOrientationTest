@@ -24,6 +24,7 @@ button{ text-align: center; width: 2rem; height: 2rem; display: block; border-ra
 #fullscreen { position: absolute; bottom: 0; left: 0; right: 0; margin: auto; }
 #fullscreen:before { content: '□'; }
 body[ data-orientation = "portrait" ] #orientation:before { width: 40%; height: 80%; margin: 10% 30%; }
+body:full-screen{background:lightgray;}
 	</style>
 	<script>
 const ORIENTATION={};
@@ -91,7 +92,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v8</article>
+	<article style="background:#dcdbdb;text-align:center;">v9</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
