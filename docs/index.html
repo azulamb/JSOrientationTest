@@ -73,6 +73,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		if ( lockclick ) { return; }
 		lockclick = true;
 		const locked = orientation.locked();
+		article.textContent = 'Start lock. ';
 		document.body.requestFullscreen().then( () => {
 			article.textContent = 'Fullscreen. ';
 			return orientation[ locked ? 'unlock' : 'lock' ]();
@@ -108,7 +109,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v18</article>
+	<article style="background:#dcdbdb;text-align:center;">v19</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
