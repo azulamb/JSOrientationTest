@@ -49,14 +49,14 @@ class Orientation extends EventTarget {
 	locked() { return this.lockscreen; }
 	lock(orientation) {
 		this.lockscreen = true;
-		return screen.orientation.lock(orientation || screen.orientation.type).catch( ( error ) => {
+		return screen.lockOrientation(orientation || screen.orientation.type).catch( ( error ) => {
 			this.lockscreen = false;
 			throw( error );
 		} );
 	}
 	unlock() {
 		this.lockscreen = false;
-		return screen.orientation.unlock();
+		return screen.unlockOrientation();
 	}
 }
 document.addEventListener( 'DOMContentLoaded', () => {
@@ -74,10 +74,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		lockclick = true;
 		const locked = orientation.locked();
 		article.textContent = 'Start lock. ';
-		(document.body.webkitRequestFullscreen||document.body.requestFullscreen)(Element.ALLOW_KEYBOARD_INPUT).then( () => {
+		/*(document.body.webkitRequestFullscreen||document.body.requestFullscreen)(Element.ALLOW_KEYBOARD_INPUT).then( () => {
 			article.textContent = 'Fullscreen. ';
-			return orientation[ locked ? 'unlock' : 'lock' ]();
-		} ).then( () => {
+			return ;
+		} )*/
+		orientation[ locked ? 'unlock' : 'lock' ]().then( () => {
 			lockclick = false;
 			event.target.classList.add( 'lock' );
 			article.textContent = 'Lock complete. ';
@@ -104,13 +105,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			article.textContent = 'Failed change screen' + ( fullscreen ? '(Now fullscreen)' : '' ) + ': ' + error.message;
 		} );
 	} );
-	if ( document.fullscreenEnabled ){ document.getElementById( 'fullscreen' ).style.display = 'none'; }
+	if ( !document.fullscreenEnabled ){ document.getElementById( 'fullscreen' ).style.display = 'none'; }
 	navigator.serviceWorker.register( './sw.js', { scope: './' } );
 } );
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v21</article>
+	<article style="background:#dcdbdb;text-align:center;">v22</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
