@@ -104,12 +104,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			article.textContent = 'Failed change screen' + ( fullscreen ? '(Now fullscreen)' : '' ) + ': ' + error.message;
 		} );
 	} );
+	if ( document.fullscreenEnabled ){ document.getElementById( 'fullscreen' ).style.display = 'none'; }
 	navigator.serviceWorker.register( './sw.js', { scope: './' } );
 } );
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v20</article>
+	<article style="background:#dcdbdb;text-align:center;">v21</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
