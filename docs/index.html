@@ -75,12 +75,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		if ( lockclick ) { return; }
 		lockclick = true;
 		const locked = orientation.locked();
-		event.target.classList[ locked ? 'remove' : 'add' ]( 'lock' );
 		orientation[ locked ? 'unlock' : 'lock' ]().then( () => {
 			lockclick = false;
+			event.target.classList.add( 'lock' );
 			article.textContent = 'Lock complete. ';
 		} ).catch( ( error ) => {
 			lockclick = false;
+			event.target.classList.remove( 'lock' );
 			article.textContent = 'Failed lock: ' + error.message;
 		} );
 	} );
@@ -106,7 +107,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v16</article>
+	<article style="background:#dcdbdb;text-align:center;">v17</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
