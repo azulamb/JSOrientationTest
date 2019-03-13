@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja" style="font-size:20px;">
+<head>
+	<meta charset="utf-8">
+	<title>Orientation test.</title>
+	<meta name="description" content="">
+	<style type="text/css">
+:root { --as-width: 16; --as-height: 9; --ratio: 16/9 }
+article { width:100vw; height:calc( var(--as-height) * 100vw / var(--as-width) ); }
+@media screen and ( min-aspect-ratio: 16/9 ) { body:not([ data-orientation = "portrait" ]) article { width: calc( var(--as-width) * 100vh / var(--as-height) ); height: 100vh; } }
+@media screen and ( min-aspect-ratio: 9/16 ) { body[ data-orientation = "portrait" ] article { width: calc( var(--as-width) * 100vh / var(--as-height) ); height: 100vh; } }
+body[ data-orientation = "portrait" ] { --as-width: 9; --as-height: 16; }
+html { height: 100% }
+body { margin: 0; height: 100%; position: relative; }
+article { margin: auto; top: 0; bottom: 0; left: 0; right: 0; position: absolute; overflow: hidden; }
+button{ text-align: center; width: 2rem; height: 2rem; display: block; border-radius: 50%; padding: 0; box-sizing: border-box; outline: none; cursor: pointer; }
+#lock { position: absolute; top: 0; right: 0; }
+#lock:before { content: '🔓'; }
+#lock.lock:before { content: '🔒'; }
+#orientation { position: absolute; top: 0; left: 0; }
+#orientation:before { content: ''; display: block; background: black; width: 80%; height: 40%; margin: 30% 10%; }
+body[ data-orientation = "portrait" ] #orientation:before { width: 40%; height: 80%; margin: 10% 30%; }
+	</style>
+	<script>
+const ORIENTATION={};
+ORIENTATION[ORIENTATION["portrait"] = 0] = "portrait";
+ORIENTATION[ORIENTATION["landscape"] = 1] = "landscape";
+class Orientation extends EventTarget {
+	constructor() {
+		super();
+		this.fixorientation = false;
+		this.orientation = (typeof screen === 'undefined' || !screen.orientation) ? this.dummy() : screen.orientation;
+		window.addEventListener('orientationchange', () => { this.onOrientationChange(); });
+	}
+	dummy() {
+		const orientation = {
+			addEventListener: () => { },
+			angle: 0,
+			dispatchEvent: () => { return false; },
+			lock: () => { return Promise.resolve(); },
+			onchange: () => { },
+			removeEventListener: () => { },
+			type: 'landscape-primary',
+			unlock: () => { },
+		};
+		return orientation;
+	}
+	get() {
+		return this.orientation.type.indexOf('portrait-') === 0 ? ORIENTATION.portrait : ORIENTATION.landscape;
+	}
+	onOrientationChange() {
+		if (this.fixorientation) {
+			return;
+		}
+		const event = new Event('change');
+		this.dispatchEvent(event);
+	}
+	lock(orientation) {
+		this.fixorientation = true;
+		return this.orientation.lock(orientation || this.orientation.type);
+	}
+	unlock() {
+		this.fixorientation = false;
+		return this.orientation.unlock();
+	}
+}
+document.addEventListener( 'DOMContentLoaded', () => {
+	const orientation = new Orientation();
+	orientation.addEventListener('change', () => {
+		document.body.dataset.orientation = ORIENTATION[ orientation.get() ];
+	} );
+	document.getElementById( 'orientation' ).addEventListener( 'click', () => {
+		document.body.dataset.orientation = document.body.dataset.orientation === 'portrait' ? 'landscape' : 'portrait';
+	} );
+	document.getElementById( 'lock' ).addEventListener( 'click', ( event ) => {
+		const c = event.target.classList;
+		c.toggle( 'lock' );
+		orientation[ c.contains( 'lock' ) ? 'lock' : 'unlock' ]();
+	} );
+} );
+	</script>
+</head>
+<body>
+	<article style="background:#dcdbdb;text-align:center;">v1</article>
+	<button id="orientation"></button>
+	<button id="lock"></button>
+</body>
+</html>
