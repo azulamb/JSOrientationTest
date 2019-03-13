@@ -31,40 +31,27 @@ ORIENTATION[ORIENTATION["landscape"] = 1] = "landscape";
 class Orientation extends EventTarget {
 	constructor() {
 		super();
-		this.fixorientation = false;
-		this.orientation = (typeof screen === 'undefined' || !screen.orientation) ? this.dummy() : screen.orientation;
+		this.lockscreen = false;
 		window.addEventListener('orientationchange', () => { this.onOrientationChange(); });
 	}
-	dummy() {
-		const orientation = {
-			addEventListener: () => { },
-			angle: 0,
-			dispatchEvent: () => { return false; },
-			lock: () => { return Promise.resolve(); },
-			onchange: () => { },
-			removeEventListener: () => { },
-			type: 'landscape-primary',
-			unlock: () => { },
-		};
-		return orientation;
-	}
 	get() {
-		return this.orientation.type.indexOf('portrait-') === 0 ? ORIENTATION.portrait : ORIENTATION.landscape;
+		return screen.orientation.type.indexOf('portrait-') === 0 ? ORIENTATION.portrait : ORIENTATION.landscape;
 	}
 	onOrientationChange() {
-		if (this.fixorientation) {
+		if (this.lockscreen) {
 			return;
 		}
 		const event = new Event('change');
 		this.dispatchEvent(event);
 	}
+	locked() { return this.lockscreen; }
 	lock(orientation) {
-		this.fixorientation = true;
-		return this.orientation.lock(orientation || this.orientation.type);
+		this.lockscreen = true;
+		return screen.orientation.lock(orientation || screen.orientation.type);
 	}
 	unlock() {
-		this.fixorientation = false;
-		return this.orientation.unlock();
+		this.lockscreen = false;
+		return screen.orientation.unlock();
 	}
 }
 document.addEventListener( 'DOMContentLoaded', () => {
@@ -102,7 +89,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v5</article>
+	<article style="background:#dcdbdb;text-align:center;">v6</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
