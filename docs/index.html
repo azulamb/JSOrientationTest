@@ -98,6 +98,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	document.getElementById( 'fullscreen' ).addEventListener( 'click', () => {
 		const func = document.body[ fullscreen ? 'webkitExitFullscreen' : 'webkitRequestFullscreen' ] || document.body[ fullscreen ? 'exitFullscreen' : 'requestFullscreen' ];
 		if ( !func ) { return; }
+		article.textContent = 'Start fullScreen. Now: ' + ( document.fullscreenElement ? '[FULL]' : '[NO]' );
 		func(Element.ALLOW_KEYBOARD_INPUT).then( () => {
 			fullscreen = !fullscreen; article.textContent = 'Change screen.';
 		} ).catch( ( error ) => {
@@ -111,7 +112,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v24</article>
+	<article style="background:#dcdbdb;text-align:center;">v25</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
