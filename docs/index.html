@@ -37,7 +37,7 @@ class Orientation extends EventTarget {
 		window.addEventListener('orientationchange', () => { this.onOrientationChange(); });
 	}
 	get() {
-		return screen.orientation.type.indexOf('portrait-') === 0 ? ORIENTATION.portrait : ORIENTATION.landscape;
+		return window.screen.orientation.type.indexOf('portrait-') === 0 ? ORIENTATION.portrait : ORIENTATION.landscape;
 	}
 	onOrientationChange() {
 		if (this.lockscreen) {
@@ -56,7 +56,7 @@ class Orientation extends EventTarget {
 	}
 	unlock() {
 		this.lockscreen = false;
-		return screen.orientation.unlock();
+		return window.screen.orientation.unlock();
 	}
 }
 document.addEventListener( 'DOMContentLoaded', () => {
