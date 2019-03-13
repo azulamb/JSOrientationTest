@@ -49,9 +49,7 @@ class Orientation extends EventTarget {
 	locked() { return this.lockscreen; }
 	lock(orientation) {
 		this.lockscreen = true;
-		return document.body.requestFullscreen().then( () => {
-			return screen.orientation.lock(orientation || screen.orientation.type);
-		} ).catch( ( error ) => {
+		return screen.orientation.lock(orientation || screen.orientation.type).catch( ( error ) => {
 			this.lockscreen = false;
 			throw( error );
 		} );
@@ -75,7 +73,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		if ( lockclick ) { return; }
 		lockclick = true;
 		const locked = orientation.locked();
-		orientation[ locked ? 'unlock' : 'lock' ]().then( () => {
+		document.body.requestFullscreen().then( () => {
+			article.textContent = 'Fullscreen. ';
+			return orientation[ locked ? 'unlock' : 'lock' ]();
+		} ).then( () => {
 			lockclick = false;
 			event.target.classList.add( 'lock' );
 			article.textContent = 'Lock complete. ';
@@ -107,7 +108,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v17</article>
+	<article style="background:#dcdbdb;text-align:center;">v18</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
