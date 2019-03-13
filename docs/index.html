@@ -7,9 +7,9 @@
 	<style type="text/css">
 :root { --as-width: 16; --as-height: 9; --ratio: 16/9 }
 article { width:100vw; height:calc( var(--as-height) * 100vw / var(--as-width) ); }
+body[ data-orientation = "portrait" ] { --as-width: 9; --as-height: 16; }
 @media screen and ( min-aspect-ratio: 16/9 ) { body:not([ data-orientation = "portrait" ]) article { width: calc( var(--as-width) * 100vh / var(--as-height) ); height: 100vh; } }
 @media screen and ( min-aspect-ratio: 9/16 ) { body[ data-orientation = "portrait" ] article { width: calc( var(--as-width) * 100vh / var(--as-height) ); height: 100vh; } }
-body[ data-orientation = "portrait" ] { --as-width: 9; --as-height: 16; }
 html { height: 100% }
 body { margin: 0; height: 100%; position: relative; }
 article { margin: auto; top: 0; bottom: 0; left: 0; right: 0; position: absolute; overflow: hidden; }
@@ -19,6 +19,8 @@ button{ text-align: center; width: 2rem; height: 2rem; display: block; border-ra
 #lock.lock:before { content: '🔒'; }
 #orientation { position: absolute; top: 0; left: 0; }
 #orientation:before { content: ''; display: block; background: black; width: 80%; height: 40%; margin: 30% 10%; }
+#fullscreen { position: absolute; bottom: 0; left: 0; right: 0; margin: auto; }
+#fullscreen:before { content: '□'; }
 body[ data-orientation = "portrait" ] #orientation:before { width: 40%; height: 80%; margin: 10% 30%; }
 	</style>
 	<script>
@@ -77,12 +79,30 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		c.toggle( 'lock' );
 		orientation[ c.contains( 'lock' ) ? 'lock' : 'unlock' ]();
 	} );
+	let fullscreen = false;
+	const article = document.querySelector( 'article' );
+	document.addEventListener( 'fullscreenchange', ( event ) => {
+		article.textContent = 'Success change screen.';
+	} );
+	document.addEventListener( 'fullscreenerror', ( event ) => {
+		article.textContent = 'Failed change screen.';
+	} );
+	document.getElementById( 'fullscreen' ).addEventListener( 'click', () => {
+		const func = document.body[ fullscreen ? 'exitFullscreen' : 'requestFullscreen' ];
+		if ( !func ) { return; }
+		func().then( () => {
+			fullscreen = !fullscreen; article.textContent = 'Change screen.';
+		} ).catch( ( error ) => {
+			article.textContent = 'Failed change screen: ' + error.message;
+		} );
+	} );
 } );
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v1</article>
+	<article style="background:#dcdbdb;text-align:center;">v2</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
+	<button id="fullscreen"></button>
 </body>
 </html>
