@@ -68,6 +68,7 @@ class Orientation extends EventTarget {
 	}
 }
 document.addEventListener( 'DOMContentLoaded', () => {
+	const article = document.querySelector( 'article' );
 	const orientation = new Orientation();
 	orientation.addEventListener('change', () => {
 		document.body.dataset.orientation = ORIENTATION[ orientation.get() ];
@@ -78,10 +79,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	document.getElementById( 'lock' ).addEventListener( 'click', ( event ) => {
 		const c = event.target.classList;
 		c.toggle( 'lock' );
-		orientation[ c.contains( 'lock' ) ? 'lock' : 'unlock' ]();
+		orientation[ c.contains( 'lock' ) ? 'lock' : 'unlock' ]().catch( ( error ) => { article.textContent = 'Failed lock: ' + error.message; } );
 	} );
 	let fullscreen = false;
-	const article = document.querySelector( 'article' );
 	document.addEventListener( 'fullscreenchange', ( event ) => {
 		article.textContent = 'Success change screen.';
 	} );
@@ -102,7 +102,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v4</article>
+	<article style="background:#dcdbdb;text-align:center;">v5</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
