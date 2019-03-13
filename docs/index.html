@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Orientation test.</title>
+	<link rel="manifest" href="./manifest.json">
 	<meta name="description" content="">
 	<style type="text/css">
 :root { --as-width: 16; --as-height: 9; --ratio: 16/9 }
@@ -96,6 +97,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			article.textContent = 'Failed change screen: ' + error.message;
 		} );
 	} );
+	navigator.serviceWorker.register( './sw.js', { scope: './' } );
 } );
 	</script>
 </head>
