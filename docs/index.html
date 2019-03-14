@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Orientation test.</title>
-	<link rel="manifest" href="./manifest.json?31">
+	<link rel="manifest" href="./manifest.json?32">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 	<meta name="description" content="">
@@ -75,10 +75,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		lockclick = true;
 		const locked = orientation.locked();
 		article.textContent = 'Start lock. Now: ' + ( locked ? '[LOCK]' : '[UNLOCK]' );
-		/*(document.body.webkitRequestFullscreen||document.body.requestFullscreen)(Element.ALLOW_KEYBOARD_INPUT).then( () => {
-			article.textContent = 'Fullscreen. ';
-			return ;
-		} )*/
 		orientation[ locked ? 'unlock' : 'lock' ]().then( () => {
 			lockclick = false;
 			event.target.classList.add( 'lock' );
@@ -120,7 +116,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v31</article>
+	<article style="background:#dcdbdb;text-align:center;">v32</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
