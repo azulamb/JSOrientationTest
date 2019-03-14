@@ -5,6 +5,7 @@
 	<title>Orientation test.</title>
 	<link rel="manifest" href="./manifest.json?4">
 	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 	<meta name="description" content="">
 	<style type="text/css">
 :root { --as-width: 16; --as-height: 9; --ratio: 16/9 }
@@ -93,11 +94,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	} );
 	document.addEventListener( 'fullscreenerror', ( event ) => {
 		article.textContent = 'Failed change screen.';
-	} );
+	} ); 
 	document.getElementById( 'fullscreen' ).addEventListener( 'click', () => {
 		if ( document.fullscreenElement ) {
 			// Exit
-			article.textContent = 'Exit fullscreen. Now: ';
+			article.textContent = 'Exit fullscreen.';
 			document.fullscreenElement.exitFullscreen().then( () => {
 				article.textContent = 'Success exit sullscreen: ' + ( document.fullscreenElement ? 'Full' : 'No' );
 			} ).catch( ( error ) => {
@@ -105,7 +106,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			} );
 		} else {
 			// Request
-			article.textContent = 'Start fullscreen. Now: ';
+			article.textContent = 'Start fullscreen.';
 			document.body.requestFullscreen().then( () => {
 				article.textContent = 'Success sullscreen: ' + ( document.fullscreenElement ? 'Full' : 'No' );
 			} ).catch( ( error ) => {
@@ -119,7 +120,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v27</article>
+	<article style="background:#dcdbdb;text-align:center;">v28</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
