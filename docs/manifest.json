@@ -1,6 +1,7 @@
 {
 	"name": "Orientation test.",
 	"short_name": "Orien",
+	"theme_color": "#9291a1",
 	"icons": [
 		{ "src": "favicon192.png", "type": "image/png", "sizes": "192x192" }
 	],
