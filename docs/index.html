@@ -88,7 +88,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			article.textContent = 'Failed lock: ' + error.message;
 		} );
 	} );
-	let fullscreen = false;
 	document.addEventListener( 'fullscreenchange', ( event ) => {
 		article.textContent = 'Success change screen.';
 	} );
@@ -96,15 +95,23 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		article.textContent = 'Failed change screen.';
 	} );
 	document.getElementById( 'fullscreen' ).addEventListener( 'click', () => {
-		const func = document.body[ document.fullscreenElement ? 'exitFullscreen' : 'requestFullscreen' ];
-		if ( !func ) { return; }
-		article.textContent = 'Start fullScreen. Now: ' + ( document.fullscreenElement ? '[FULL]' : '[NO]' );
-		func().then( () => {
-			fullscreen = !fullscreen; article.textContent = 'Change screen.';
-		} ).catch( ( error ) => {
-			const fullscreen = document.fullscreenElement;
-			article.textContent = 'Failed change screen' + ( fullscreen ? '(Now fullscreen)' : '' ) + ': ' + error.message;
-		} );
+		if ( document.fullscreenElement ) {
+			// Exit
+			article.textContent = 'Exit fullscreen. Now: ';
+			document.fullscreenElement.exitFullscreen().then( () => {
+				article.textContent = 'Success exit sullscreen: ' + ( document.fullscreenElement ? 'Full' : 'No' );
+			} ).catch( ( error ) => {
+				article.textContent = 'Failed change screen: ' + ( document.fullscreenElement ? 'Full' : 'No' ) + error.message;
+			} );
+		} else {
+			// Request
+			article.textContent = 'Start fullscreen. Now: ';
+			document.body.requestFullscreen().then( () => {
+				article.textContent = 'Success sullscreen: ' + ( document.fullscreenElement ? 'Full' : 'No' );
+			} ).catch( ( error ) => {
+				article.textContent = 'Failed change screen: ' + ( document.fullscreenElement ? 'Full' : 'No' ) + error.message;
+			} );
+		}
 	} );
 	if ( !document.fullscreenEnabled ){ document.getElementById( 'fullscreen' ).style.display = 'none'; }
 	navigator.serviceWorker.register( './sw.js', { scope: './' } );
@@ -112,7 +119,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v26</article>
+	<article style="background:#dcdbdb;text-align:center;">v27</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
