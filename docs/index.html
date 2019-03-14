@@ -106,7 +106,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			} );
 		} else {
 			// Request
-			article.textContent = 'Start fullscreen.';
+			article.textContent = 'Start fullscreen.' + ( typeof document.body.requestFullscreen );
 			document.body.requestFullscreen().then( () => {
 				article.textContent = 'Success sullscreen: ' + ( document.fullscreenElement ? 'Full' : 'No' );
 			} ).catch( ( error ) => {
@@ -120,7 +120,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	</script>
 </head>
 <body>
-	<article style="background:#dcdbdb;text-align:center;">v28</article>
+	<article style="background:#dcdbdb;text-align:center;">v29</article>
 	<button id="orientation"></button>
 	<button id="lock"></button>
 	<button id="fullscreen"></button>
